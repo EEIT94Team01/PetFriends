@@ -1,0 +1,9 @@
+NotEmpty.AdoptBean.UserName=請輸入名稱
+NotEmpty.AdoptBean.UserPhone=請輸入聯絡手機
+NotEmpty.AdoptBean.PetType=請選擇寵物的類型
+NotEmpty.AdoptBean.PetFeature=請描述寵物的特徵
+Pattern.AdoptBean.UserName=僅限輸入中英文
+Pattern.AdoptBean.UserPhone=請輸入正確的手機電話
+Email.AdoptBean.UserEmail=請輸入正確的郵件信箱
+Past.AdoptBean.FindDate=請選擇正確的時間
+NotNull.AdoptBean.PetGender=請選擇性別
