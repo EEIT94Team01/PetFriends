@@ -1,5 +1,6 @@
 package petfriends.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,26 +19,32 @@ import petfriends.model.AdoptBean;
 import petfriends.service.AdoptService;
 
 @Controller
-@RequestMapping("/adopt.controller")
-public class AdoptController {
+@RequestMapping("/notuse")
+public class AdoptControllerOld {
 	@Autowired
 	private AdoptService adoptService;
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public String newPetInfo(ModelMap model) {
+		AdoptBean adoptBean = new AdoptBean();
+		model.addAttribute("adoptBean", adoptBean);
+		return "Adopt.error";
+	}
 
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET})
-	public String savePetInfo(@Valid AdoptBean adoptBean, BindingResult result, Model model) {
-		Map<String, String> errors = new HashMap<String, String>();
+	@RequestMapping(method = RequestMethod.POST)
+	public String savePetInfo(@Valid AdoptBean adoptBean, BindingResult result, ModelMap model) {
+		
+		System.out.println(adoptBean);
+		System.out.println(result);
+		
 		if (result.hasErrors()) {
-			for (int i = 0; i < result.getErrorCount(); i++){
-				errors.put(result.getFieldErrors().get(i).getField(), result.getFieldErrors().get(i).getDefaultMessage());
-			}
-			model.addAttribute("errors", errors);
 			return "Adopt.error";
 		}
 
 		model.addAttribute("Adopt.success", adoptBean.getUserName() + "您好，您的紀錄已成功登記。");
 		return "Adopt.success";
 	}
-	/*
+
 	@ModelAttribute("city")
 	public List<String> initCity() {
 		List<String> city = new ArrayList<String>();
@@ -67,5 +74,5 @@ public class AdoptController {
 			sex.add(sexStr[i]);
 		}
 		return sex;
-	}*/
+	}
 }

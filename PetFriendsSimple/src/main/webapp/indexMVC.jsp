@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +56,7 @@
 
 <body>
     <div id="form_frame">
-        <form method="POST" action="<c:url value="/adopt.controller"/>" enctype="multipart/form-data">>
+        <form:form method="POST" modelAttribute="adoptBean">
             <label>
                 <input type="radio" name="PetForm" value="1" checked> 遺失</label>
             <label>
@@ -70,128 +71,118 @@
                 <tr>
                     <td>聯絡人姓名：</td>
                     <td>
-                        <input type="text" value="${param.UserName}" name="UserName" maxlength="10" placeholder="必填"/>
+                        <form:input type="text" path="UserName" id="UserName"/>
                     </td>
-                    <td><span>${errors.UserName}</span></td>
+                    <td><form:errors path="UserName" /></td>
                 </tr>
                 <tr>
                     <td>聯絡人手機電話：</td>
                     <td>
-                        <input type="text" value="${param.UserPhone}" name="UserPhone" maxlength="10" placeholder="Ex:09xxxxxxxx" />
+                        <form:input type="text" path="UserPhone" id="UserPhone" maxlength="10" placeholder="Ex:09xxxxxxxx" />
                     </td>
-                    <td><span>${errors.UserPhone}</span></td>
+                    <td><form:errors path="UserPhone" /></td>
                 </tr>
                 <tr>
                     <td>E-mail：</td>
                     <td>
-                        <input type="email" value="${param.UserEmail}" name="UserEmail" />
+                        <form:input type="email" path="UserEmail" id="UserEmail" />
                     </td>
-                    <td><span>${errors.UserEmail}</span></td>
+                    <td><form:errors path="UserEmail" /></td>
                 </tr>
                 <th><label>寵物資訊</label></th>
                 <tr>
                     <td>寵物姓名：</td>
                     <td>
-                        <input type="text" value="${param.PetName}" name="PetName" placeholder="若未知可不填" maxlength="10" />
+                        <form:input type="text" path="PetName" id="PetName" placeholder="若未知可不填" maxlength="20" />
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>種類：</td>
                     <td>
-                    	<select id="PetType" name="PetType">
-                    		<option value="">請選擇種類</option>
-                    		<option value="1">狗狗</option>
-                    		<option value="2">貓咪</option>
-                    		<option value="3">兔子</option>
-                    		<option value="4">鼠類</option>
-                    		<option value="5">鳥類</option>
-                    		<option value="6">其他</option>
-                    	</select>
+                    	<form:select path="PetType" id="PetType">
+                    		<form:option value="">請選擇種類</form:option>
+                    		<form:options items="${type}"/>
+                    	</form:select>
                     </td>
-                     <td><span>${errors.PetType}</span></td>
+                    <td><form:errors path="PetType" /></td>
                 </tr>
                 <tr>
                     <td>品種：</td>
                     <td>
-                        <input type="text" value="${param.PetBreeds}" name="PetBreeds" placeholder="若未知可不填" maxlength="5" />
+                        <form:input type="text" path="PetBreeds" id="PetBreeds" placeholder="若未知可不填" maxlength="5" />
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>特徵：</td>
                     <td>
-                        <input type="text" value="${parm.PetFeature}" name="PetFeature" maxlength="50" />
+                        <form:input type="text" path="PetFeature" id="PetFeature" maxlength="50" />
                     </td>
-                    <td><span>${errors.PetFeature}</span></td>
+                    <td><form:errors path="PetFeature" /></td>
                 </tr>
                 <tr>
                     <td>走失地點：</td>
                     <td>
-                    	<select id="${parm.FindCity}" name="FindCity">
-                    		<option value="">請選擇城市</option>
-                    		<option value="台北市">台北市</option>
-                    		<option value="新北市">新北市</option>
-                    		<option value="台中市">台中市</option>
-                    		<option value="台南市">台南市</option>
-                    		<option value="高雄市">高雄市</option>
-                    	</select>
-                        <select id="FindDistrict">
-                    		<option value="">請選擇地區<option>
-                    	</select>
-                        <br><input type="text" value="${parm.FindRoad}" name="FindRoad" maxlength="50" />
+                    	<form:select path="FindCity" id="FindCity">
+                    		<form:option value="">請選擇城市</form:option>
+                    		<form:options items="${city}"/>
+                    	</form:select>
+                        <form:select path="FindDistrict" id="FindDistrict">
+                    		<form:option value="大安區">大安區</form:option>
+                    	</form:select>
+                        <br><form:input type="text" path="FindRoad" id="FindRoad" maxlength="50" />
                     </td>
-                    <td><span>${errors.FindCity}</span></td>
+                    <td><form:errors path="FindCity" /></td>
                 </tr>
                 <tr>
                     <td>走失日期：</td>
                     <td>
-                        <input type="date" value="${parm.FindDate}" name="FindDate" />
+                        <form:input type="date" path="FindDate" id="FindDate" />
                     </td>
-                    <td><span>${errors.FindDate}</span></td>
+                    <td><form:errors path="FindCity" /></td>
                 </tr>
                 <tr>
                     <td>晶片號碼：</td>
                     <td>
-                        <input type="text" value="${parm.ICNumber}" name="ICNumber" placeholder="若未知可不填" maxlength="15" />
+                        <form:input type="text" path="ICNumber" id="ICNumber" placeholder="若未知可不填" maxlength="15" />
                     </td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>性別：</td>
                     <td>
-                    	<select value="PetGender" name="PetGender">
-                    		<option value="未知">未知</option>
-                    		<option value="男性">男性</option>
-                    		<option value="女性">女性</option>
-                    	</select>
-                    </td>
-                    <td><span>${errors.PetGender}</span></td>
-                </tr>
-                <tr>
-                    <td>上傳圖片：</td>
-                    <td>
-                        <input type="file" name="file" accept="image/*" multiple="multiple">                     
+                    	<form:select path="PetGender" id="PetGender">
+                    		<form:option value="">請選擇性別</form:option>
+                    		<form:options items="${sex}"/>
+                    	</form:select>
                     </td>
                     <td></td>
                 </tr>
                 <tr>
+                    <td>上傳圖片：</td>
+                    <td>
+                        <!--  <input type="file" name="file" accept="image/*">-->                        
+                    </td>
+                    <td><!--  <span>${errors.PetPhotos}</span>--></td>
+                </tr>
+                <tr>
                     <td>備註：</td>
                     <td>
-                        <textarea id="PetNotes" name="PetNotes" placeholder="最多500字"></textarea>
+                        <form:textarea path="PetNotes" id="PetNotes" placeholder="最多500字"/>
                     </td>
                     <td></td>
                     <tr>
                         <td></td>
                         <td>
-                            <input type="submit" name="insert" value="新增">
+                            <input type="submit" value="新增">
                             <input type="button" value="清除" onclick="clearForm()">
                             <input type="button" value="取消" onclick="cancelForm()">
                         </td>
                         <td></td>
                     </tr>
             </table>
-        </form>
+        </form:form>
     </div>
 </body>
 

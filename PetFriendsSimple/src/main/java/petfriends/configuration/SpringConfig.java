@@ -23,7 +23,7 @@ import org.springframework.web.servlet.view.XmlViewResolver;
 //SPRING MVC設定
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "petfriends.configuration")
+@ComponentScan(basePackages = {"petfriends.*"})
 public class SpringConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private ServletContext application;
@@ -33,10 +33,9 @@ public class SpringConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setLocation(new ServletContextResource(application, "/WEB-INF/views.xml"));
 		registry.viewResolver(viewResolver);
 	}
-
 	// XML TO JAVA CONFIG
-	
-	/*@Bean
+	/*
+	@Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);

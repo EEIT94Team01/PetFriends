@@ -12,6 +12,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.jboss.logging.Message;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -24,28 +25,28 @@ public class AdoptBean {
 	
 	private int PetForm;
 	
-	@NotEmpty
-	@Pattern(regexp="^[\u4e00-\u9fa5a-zA-Z]+$")
+	@NotEmpty(message="不可空白")
+	@Pattern(regexp="^[\u4e00-\u9fa5a-zA-Z]+$",message="只可輸入中英文")
 	private String UserName;
 	
-	@NotEmpty
-	@Pattern(regexp="^09\\d{2}-?\\d{3}-?\\d{3}$")
+	@NotEmpty(message="不可空白")
+	@Pattern(regexp="^09\\d{2}-?\\d{3}-?\\d{3}$",message="請輸入正確的手機號碼")
 	private String UserPhone;
 	
-	@Email
+	@Email(message="請輸入正確格式")
 	private String UserEmail;
 	
 	private String PetName;
 	
-	@NotEmpty
+	@NotEmpty(message="請選擇種類")
 	private String PetType;
 	
 	private String PetBreeds;
 	
-	@NotEmpty
+	@NotEmpty(message="不可空白")
 	private String PetFeature;
 	
-	@NotNull
+	@NotEmpty(message="請選擇城市")
 	private String FindCity;
 	
 	private String FindDistrict;
@@ -53,13 +54,13 @@ public class AdoptBean {
 	private String FindRoad;
 	
 	@DateTimeFormat(pattern="yyyy/MM/dd")
-	@Past
+	@Past(message="請勿當未來人")
 	private java.util.Date FindDate;
 	
 	private String ICNumber;
 	
-	@NotNull
-	private int PetGender;
+	@NotEmpty(message="請選擇性別")
+	private String PetGender;
 	
 	private int PetPhotos;
 	
@@ -78,7 +79,7 @@ public class AdoptBean {
 		return AId;
 	}
 
-	public void setAID(int aId) {
+	public void setAId(int aId) {
 		AId = aId;
 	}
 
@@ -186,11 +187,11 @@ public class AdoptBean {
 		ICNumber = iCNumber;
 	}
 
-	public int getPetGender() {
+	public String getPetGender() {
 		return PetGender;
 	}
 
-	public void setPetGender(int petGender) {
+	public void setPetGender(String petGender) {
 		PetGender = petGender;
 	}
 
@@ -209,5 +210,7 @@ public class AdoptBean {
 	public void setPetNotes(String petNotes) {
 		PetNotes = petNotes;
 	}
+
+
 
 }
