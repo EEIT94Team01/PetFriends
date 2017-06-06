@@ -1,6 +1,7 @@
 package petfriends.model;
 
-import javax.persistence.Column;
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,41 +13,39 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.jboss.logging.Message;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "Adopt")
-public class AdoptBean {
+public class AdoptBean implements Serializable{
 	@Id
-	@Column(name = "AId")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int AId;
 	
 	private int PetForm;
 	
-	@NotEmpty(message="不可空白")
-	@Pattern(regexp="^[\u4e00-\u9fa5a-zA-Z]+$",message="只可輸入中英文")
+	@Pattern(regexp="^[\u4e00-\u9fa5a-zA-Z]+$")
+	@NotEmpty
 	private String UserName;
 	
-	@NotEmpty(message="不可空白")
-	@Pattern(regexp="^09\\d{2}-?\\d{3}-?\\d{3}$",message="請輸入正確的手機號碼")
+	@Pattern(regexp="^09\\d{2}-?\\d{3}-?\\d{3}$")
+	@NotEmpty
 	private String UserPhone;
 	
-	@Email(message="請輸入正確格式")
+	@Email
 	private String UserEmail;
 	
 	private String PetName;
 	
-	@NotEmpty(message="請選擇種類")
+	@NotEmpty
 	private String PetType;
 	
 	private String PetBreeds;
 	
-	@NotEmpty(message="不可空白")
+	@NotEmpty
 	private String PetFeature;
 	
-	@NotEmpty(message="請選擇城市")
+	@NotEmpty
 	private String FindCity;
 	
 	private String FindDistrict;
@@ -54,18 +53,18 @@ public class AdoptBean {
 	private String FindRoad;
 	
 	@DateTimeFormat(pattern="yyyy/MM/dd")
-	@Past(message="請勿當未來人")
+	@Past
+	@NotNull
 	private java.util.Date FindDate;
 	
 	private String ICNumber;
 	
-	@NotEmpty(message="請選擇性別")
+	@NotEmpty
 	private String PetGender;
 	
 	private int PetPhotos;
 	
 	private String PetNotes;
-	
 	@Override
 	public String toString() {
 		return "AdoptBean [AId=" + AId + ", PetForm=" + PetForm + ", UserName=" + UserName + ", UserPhone=" + UserPhone

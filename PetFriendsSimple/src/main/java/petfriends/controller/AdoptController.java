@@ -1,16 +1,21 @@
 package petfriends.controller;
 
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,24 +23,44 @@ import petfriends.model.AdoptBean;
 import petfriends.service.AdoptService;
 
 @Controller
-@RequestMapping("/adopt.controller")
+@RequestMapping("/")
 public class AdoptController {
 	@Autowired
 	private AdoptService adoptService;
-
-	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET})
-	public String savePetInfo(@Valid AdoptBean adoptBean, BindingResult result, Model model) {
-		Map<String, String> errors = new HashMap<String, String>();
+	@InitBinder
+	protected void initBinder(WebDataBinder webDataBinder){
+		webDataBinder.registerCustomEditor(String.class,new StringTrimmerEditor(true));
+		CustomDateEditor customerDateEditor = new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true);
+		webDataBinder.registerCustomEditor(java.util.Date.class, customerDateEditor);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+    public String newRegistration(ModelMap model) {
+		AdoptBean adoptBean = new AdoptBean();
+        model.addAttribute("adoptBean", adoptBean);
+        return "index";
+    }
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public String savePetInfo(@Valid AdoptBean adoptBean, BindingResult result, ModelMap model) {
+		System.out.println(adoptBean.toString());
+		
 		if (result.hasErrors()) {
-			for (int i = 0; i < result.getErrorCount(); i++){
-				errors.put(result.getFieldErrors().get(i).getField(), result.getFieldErrors().get(i).getDefaultMessage());
-			}
-			model.addAttribute("errors", errors);
-			return "Adopt.error";
+			return "index";
 		}
-
-		model.addAttribute("Adopt.success", adoptBean.getUserName() + "您好，您的紀錄已成功登記。");
-		return "Adopt.success";
+			
+		if(!result.hasErrors()){
+			AdoptBean resultBean = adoptService.insert(adoptBean);
+			if(resultBean==null) {
+				model.addAttribute("action", "Insert失敗");
+			} else {
+				model.addAttribute("Adopt.success", resultBean.getUserName() + "您好，您的寵物紀錄已成功登記。");
+				return "view";
+			}
+			return "index";
+			}
+		
+		return "index";
 	}
 	/*
 	@ModelAttribute("city")

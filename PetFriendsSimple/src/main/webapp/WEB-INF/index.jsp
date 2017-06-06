@@ -41,15 +41,27 @@
         resize: none;
     }
     </style>
-    <script type="text/javascript" src="resources/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="resources/js/index.js"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery-3.2.1.min.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/index.js' />"></script>
     <script type="text/javascript">
-
     $(document).ready(function(){
-        $("input[name=PetForm]").change(function(){
+    	
+    	//預設選一
+    	$("input[name='PetForm'][value='1']").prop("checked",true);
+    	//下拉式選單產生
+    	
+    	
+    	//選項回填
+    	$("#PetType option[value='${param.PetType}']").attr('selected', true);
+        $("#FindCity option[value='${param.FindCity}']").attr('selected', true);
+        $("#PetGender option[value='${param.PetGender}']").attr('selected', true);	    	
+        
+        //表單切換
+        $("input[name='PetForm']").change(function(){
             var x=$(this).val();
             changeForm(x);
         });
+
     });
     </script>
 </head>
@@ -58,14 +70,14 @@
     <div id="form_frame">
         <form:form method="POST" modelAttribute="adoptBean">
             <label>
-                <input type="radio" name="PetForm" value="1" checked> 遺失</label>
+                <form:radiobutton path="PetForm" id="PetForm" value="1"/> 遺失</label>
             <label>
-                <input type="radio" name="PetForm" value="2"> 拾獲，找原主人</label>
+                <form:radiobutton path="PetForm" id="PetForm" value="2"/> 拾獲，找原主人</label>
             <label>
-                <input type="radio" name="PetForm" value="3"> 拾獲，找新主人</label>
+                <form:radiobutton path="PetForm" id="PetForm" value="3"/> 拾獲，找新主人</label>
             <label>
-                <input type="radio" name="PetForm" value="4"> 不擬續養，送養</label>
-            <br>
+                <form:radiobutton path="PetForm" id="PetForm" value="4"/> 不擬續養，送養</label>
+            <br><span><form:errors path="PetForm" /></span>
             <table>
                 <th><label>連絡人資訊</label></th>
                 <tr>
@@ -102,7 +114,12 @@
                     <td>
                     	<form:select path="PetType" id="PetType">
                     		<form:option value="">請選擇種類</form:option>
-                    		<form:options items="${type}"/>
+                    		<form:option value="1">狗狗</form:option>
+                    		<form:option value="2">貓咪</form:option>
+                    		<form:option value="3">兔子</form:option>
+                    		<form:option value="4">鼠類</form:option>
+                    		<form:option value="5">鳥類</form:option>
+                    		<form:option value="6">其他</form:option>
                     	</form:select>
                     </td>
                     <td><form:errors path="PetType" /></td>
@@ -122,25 +139,24 @@
                     <td><form:errors path="PetFeature" /></td>
                 </tr>
                 <tr>
-                    <td>走失地點：</td>
+                    <td id="localtionChange">走失地點：</td>
                     <td>
                     	<form:select path="FindCity" id="FindCity">
                     		<form:option value="">請選擇城市</form:option>
-                    		<form:options items="${city}"/>
                     	</form:select>
                         <form:select path="FindDistrict" id="FindDistrict">
-                    		<form:option value="大安區">大安區</form:option>
+                    		<form:option value=""></form:option>
                     	</form:select>
                         <br><form:input type="text" path="FindRoad" id="FindRoad" maxlength="50" />
                     </td>
                     <td><form:errors path="FindCity" /></td>
                 </tr>
                 <tr>
-                    <td>走失日期：</td>
+                    <td id="DateChange">走失日期：</td>
                     <td>
                         <form:input type="date" path="FindDate" id="FindDate" />
                     </td>
-                    <td><form:errors path="FindCity" /></td>
+                    <td><form:errors path="FindDate" /></td>
                 </tr>
                 <tr>
                     <td>晶片號碼：</td>
@@ -154,10 +170,12 @@
                     <td>
                     	<form:select path="PetGender" id="PetGender">
                     		<form:option value="">請選擇性別</form:option>
-                    		<form:options items="${sex}"/>
+                    		<form:option value="N">請選擇性別</form:option>
+                    		<form:option value="M">請選擇性別</form:option>
+                    		<form:option value="F">請選擇性別</form:option>                    		
                     	</form:select>
                     </td>
-                    <td></td>
+                    <td><form:errors path="PetGender" /></td>
                 </tr>
                 <tr>
                     <td>上傳圖片：</td>
